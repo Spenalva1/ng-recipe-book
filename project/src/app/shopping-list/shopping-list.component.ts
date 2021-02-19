@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { runInThisContext } from 'vm';
 import { Ingredient } from '../shared/ingredient.mode';
 import { ShoppingListService } from '../shared/shopping-list.service';
 

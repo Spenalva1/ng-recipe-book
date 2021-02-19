@@ -9,7 +9,7 @@ export class ShoppingListService {
 
   public ingridientsChanged = new Subject<Ingredient[]>();
 
-  private ingredientsObject = [];
+  private ingredientsObject = {};
 
   private ingredientsArr: Ingredient[] = [];
 
@@ -45,5 +45,11 @@ export class ShoppingListService {
     const igs = [];
     Object.keys(obj).forEach((key: string) => igs.push(new Ingredient(key, obj[key])));
     return igs;
+  }
+
+  public clearList(): void {
+    this.ingredientsArr = [];
+    this.ingredientsObject = {};
+    this.ingridientsChanged.next(this.ingredientsArr.slice());
   }
 }

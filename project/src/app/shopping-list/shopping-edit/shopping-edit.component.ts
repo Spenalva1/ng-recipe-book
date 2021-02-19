@@ -7,17 +7,11 @@ import { ShoppingListService } from 'src/app/shared/shopping-list.service';
   templateUrl: './shopping-edit.component.html',
   styleUrls: ['./shopping-edit.component.scss']
 })
-export class ShoppingEditComponent implements OnInit, AfterViewInit {
+export class ShoppingEditComponent {
   @ViewChild('nameInput') nameInput: ElementRef;
   @ViewChild('amountInput') amountInput: ElementRef;
 
   constructor(private shoppingListService: ShoppingListService) { }
-
-  ngOnInit(): void { }
-
-  ngAfterViewInit(): void {
-    this.amountInput.nativeElement.value = 0;
-  }
 
   onAddIngredient(): void {
     const name = (this.nameInput.nativeElement.value as string).toLowerCase();
@@ -28,8 +22,12 @@ export class ShoppingEditComponent implements OnInit, AfterViewInit {
       );
     }
     this.nameInput.nativeElement.value = '';
-    this.amountInput.nativeElement.value = 0;
+    this.amountInput.nativeElement.value = '';
     this.nameInput.nativeElement.focus();
+  }
+
+  onClearIngredients(): void {
+    this.shoppingListService.clearList();
   }
 
 }
