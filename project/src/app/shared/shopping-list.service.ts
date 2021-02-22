@@ -8,9 +8,9 @@ import { Ingredient } from './ingredient.mode';
 export class ShoppingListService {
 
   public ingridientsChanged = new Subject<Ingredient[]>();
+  public startedEditing = new Subject<string>();
 
   private ingredientsObject = {};
-
   private ingredientsArr: Ingredient[] = [];
 
   constructor() { }
@@ -19,14 +19,43 @@ export class ShoppingListService {
     return this.ingredientsArr.slice();
   }
 
+  public getIngredient(name: string): Ingredient{
+    if (this.ingredientsObject[name]) {
+      return new Ingredient(name, this.ingredientsObject[name]);
+    }
+    return null;
+  }
+
+  public deleteIngredient(name: string): void {
+    if (this.ingredientsObject[name]) {
+      delete this.ingredientsObject[name];
+      this.startedEditing.next('');
+      this.ingredientsUpdate();
+    }
+  }
+
+  public updateIngredient(name: string, ingredient: Ingredient): void{
+    if (this.ingredientsObject[name]) {
+      delete this.ingredientsObject[name];
+      this.ingredientsObject[ingredient.name] = ingredient.amount;
+      this.startedEditing.next('');
+      this.ingredientsUpdate();
+    }
+  }
+
+  private ingredientsUpdate(): void{
+    this.ingredientsArr = this.igObjToArr(this.ingredientsObject);
+    this.ingredientsArr.sort((a, b) => a.name.localeCompare(b.name));
+    this.ingridientsChanged.next(this.ingredientsArr.slice());
+  }
+
   public addIngridient(ingredient: Ingredient): void {
     if (this.ingredientsObject[ingredient.name]) {
       this.ingredientsObject[ingredient.name] += ingredient.amount;
     } else {
       this.ingredientsObject[ingredient.name] = ingredient.amount;
     }
-    this.ingredientsArr = this.igObjToArr(this.ingredientsObject);
-    this.ingridientsChanged.next(this.ingredientsArr.slice());
+    this.ingredientsUpdate();
   }
 
   public addIngridients(ingredients: Ingredient[]): void {
@@ -37,8 +66,7 @@ export class ShoppingListService {
         this.ingredientsObject[ig.name] = ig.amount;
       }
     });
-    this.ingredientsArr = this.igObjToArr(this.ingredientsObject);
-    this.ingridientsChanged.next(this.ingredientsArr.slice());
+    this.ingredientsUpdate();
   }
 
   private igObjToArr(obj: any): Ingredient[]{
