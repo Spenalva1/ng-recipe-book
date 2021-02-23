@@ -9,7 +9,7 @@ export class DropdownDirective {
 
   constructor(private elRef: ElementRef, private renderer: Renderer2) { }
 
-  @HostListener('click') click(eventData: Event) {
+  @HostListener('click') click(eventData: Event): void {
     this.elementClass = this.elementClass === '' ? 'open' : '';
   }
 
