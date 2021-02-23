@@ -17,9 +17,9 @@
     <div class="btn-group" appDropdown>
       <button type="button" class="btn btn-primary dropdown-toggle">Manage Recipe<span class="caret"></span></button>
       <ul class="dropdown-menu">
-        <li style="cursor: pointer;"><a (click)="addIngreientsToShoppingList()">Add Ingredients to Shopping List</a></li>
+        <li style="cursor: pointer;"><a *ngIf="recipe.ingredients.length >= 1" (click)="addIngreientsToShoppingList()">Add Ingredients to Shopping List</a></li>
         <li style="cursor: pointer;"><a routerLink="edit">Edit Recipe</a></li>
-        <li style="cursor: pointer;"><a>Delete Recipe</a></li>
+        <li style="cursor: pointer;"><a (click)="onDeleteRecipe()">Delete Recipe</a></li>
       </ul>
     </div>
   </div>

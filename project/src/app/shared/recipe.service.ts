@@ -9,6 +9,8 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class RecipeService {
 
+  public recipesChanged = new Subject<Recipe[]>();
+
   constructor(private shoppingListService: ShoppingListService) { }
 
   private recipes: Recipe[] = [
@@ -35,6 +37,22 @@ export class RecipeService {
       ]
     )
   ];
+
+  public addRecipe(recipe: Recipe): number {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+    return this.recipes.length - 1;
+  }
+
+  public updateRecipe(id: number, recipe: Recipe): void {
+    this.recipes[id] = recipe;
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  public deleteRecipe(id: number): void {
+    this.recipes.splice(id, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   public getRecipes(): Recipe[] {
     return this.recipes.slice();

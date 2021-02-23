@@ -23,7 +23,7 @@ export class RecipeDetailComponent implements OnInit {
       this.id = +param.id;
       this.recipe = this.recipeService.getRecipeById(+this.id);
       if (!this.recipe) {
-        this.router.navigateByUrl('/recipes')
+        this.router.navigateByUrl('/recipes');
       }
 
     });
@@ -31,6 +31,11 @@ export class RecipeDetailComponent implements OnInit {
 
   public addIngreientsToShoppingList(): void {
     this.recipeService.addIngreientsToShoppingList(this.recipe.ingredients);
+  }
+
+  public onDeleteRecipe(): void {
+    this.recipeService.deleteRecipe(this.id);
+    this.router.navigateByUrl('/recipes');
   }
 
 }

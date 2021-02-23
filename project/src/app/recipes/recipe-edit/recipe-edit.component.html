@@ -3,8 +3,16 @@
     <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
       <div class="row" style="margin-bottom: 15px;">
         <div class="col-xs-12">
-          <button type="submit" class="btn btn-success">Save</button>
-          <button type="button" class="btn btn-danger">Cancel</button>
+          <button
+          [disabled]="recipeForm.invalid || (!recipeForm.dirty && !formDirty)"
+          style="margin-right: 15px;"
+          type="submit"
+          class="btn btn-success">{{ this.editMode ? 'Save' : 'Add' }}</button>
+          <button
+          [disabled]="!recipeForm.dirty"
+          type="button"
+          class="btn btn-danger"
+          (click)="onCancel()">Cancel</button>
         </div>
       </div>
       <div class="row">
@@ -18,14 +26,14 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="imagePath">Imgae URL</label>
-            <input type="text" id="imagePath" class="form-control" formControlName="imagePath">
+            <label for="imagePath">Image URL</label>
+            <input type="text" id="imagePath" #imagePath class="form-control" formControlName="imagePath">
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <img src="" class="img-responsive">
+          <img style="margin-bottom: 15px;" *ngIf="imagePath.value" [src]="imagePath.value" class="img-responsive">
         </div>
       </div>
       <div class="row">
@@ -41,12 +49,12 @@
           <div style="margin-bottom: 15px;" class="row" *ngFor="let igCtrl of controls; let i = index" [formGroupName]="i">
             <div class="col-xs-8"><input type="text" formControlName="name" class="form-control"></div>
             <div class="col-xs-2"><input type="number" formControlName="amount" class="form-control"></div>
-            <div class="col-xs-2"><button type="button" class="btn btn-danger" (click)="onDeleteIngredient()">X</button></div>
+            <div class="col-xs-2"><button type="button" class="btn btn-danger" (click)="onDeleteIngredient(i)">X</button></div>
           </div>
           <hr>
           <div class="row">
             <div class="col-xs-12">
-              <button type="button" class="btn btn-success" (click)="onAddIngredient(i)">Add Ingredient</button>
+              <button type="button" class="btn btn-success" (click)="onAddIngredient()">Add Ingredient</button>
             </div>
           </div>
         </div>
