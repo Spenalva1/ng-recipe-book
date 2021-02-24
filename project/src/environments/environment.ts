@@ -2,8 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
 export const environment = {
-  production: false
+  production: false,
+  recipesEndpoint: 'https://ng-recipe-book-7cdf7-default-rtdb.firebaseio.com/recipes.json',
+  apiKey: 'AIzaSyBDmaqYfF7eSoW7Jx3LxK_Q5hIl5EAFTk8'
 };
 
 /*

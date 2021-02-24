@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { RecipeService } from './recipe.service';
 import { map, tap } from 'rxjs/operators';
-import { promise } from 'protractor';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataStorageService {
+
+  private endpoint = environment.recipesEndpoint
 
   constructor(
     private http: HttpClient,
@@ -18,13 +20,13 @@ export class DataStorageService {
 
   storeRecipes(): void {
     const recipes = this.recipeService.getRecipes();
-    this.http.put('https://ng-recipe-book-7cdf7-default-rtdb.firebaseio.com/recipes.json', recipes).subscribe(resp => {
+    this.http.put(this.endpoint, recipes).subscribe(resp => {
       console.log(resp);
     });
   }
 
   fetchRecipes(): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>('https://ng-recipe-book-7cdf7-default-rtdb.firebaseio.com/recipes.json')
+    return this.http.get<Recipe[]>(this.endpoint)
     .pipe(
       map(recipes => {
         return recipes.map(recipe => {
