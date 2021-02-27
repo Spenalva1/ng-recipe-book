@@ -29,6 +29,9 @@ export class DataStorageService {
   fetchRecipes(): any {
     return this.http.get<Recipe[]>(this.endpoint).pipe(
       map(recipes => {
+        if (!recipes) {
+          return [];
+        }
         return recipes.map(recipe => {
           return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []};
         });
