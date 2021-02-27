@@ -7,8 +7,8 @@
       class="list-group-item"
       style="cursor: pointer"
       *ngFor="let ingredient of ingredients"
-      [ngClass]="{active: ingredient.name === editItem}"
-      (click)="onEditItem(ingredient.name)">
+      [ngClass]="{ active: ingredient.name === editItem?.name }"
+      (click)="onEditItem(ingredient)">
         {{ ingredient.name | titlecase}} ({{ ingredient.amount }})
       </a>
     </ul>
