@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { AuthService, AuthResponseData } from './auth.service';
+import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from './store/auth.actions';
@@ -12,15 +10,13 @@ import * as AuthActions from './store/auth.actions';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   authStateSub: Subscription;
   error: string = null;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
     private store: Store<fromApp.AppState>
   ) { }
 
@@ -31,6 +27,14 @@ export class AuthComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.authStateSub.unsubscribe();
+  }
+
+  public clearError(): void {
+    this.store.dispatch(new AuthActions.ClearError());
+  }
+
   public toggleAuthMode(): void {
     this.isLoginMode = !this.isLoginMode;
   }
@@ -39,12 +43,8 @@ export class AuthComponent implements OnInit {
     if (f.invalid) {
       return;
     }
-    this.error = null;
-    this.isLoading = true;
     const email = f.value.email;
     const password = f.value.password;
-
-    let authObs: Observable<AuthResponseData| string>;
 
     if (this.isLoginMode) {
       this.store.dispatch(new AuthActions.LoginStart({
@@ -52,8 +52,10 @@ export class AuthComponent implements OnInit {
         password
       }));
     } else {
-      authObs = this.authService.signup(email, password);
-      this.authService.signup(email, password);
+      this.store.dispatch(new AuthActions.SignupStart({
+        email,
+        password
+      }));
     }
   }
 
