@@ -1,5 +1,3 @@
-import { debug } from 'console';
-import { Ingredient } from 'src/app/shared/ingredient.mode';
 import { Recipe } from 'src/app/shared/recipe.model';
 import * as RecipesActions from './recipes.actions';
 
