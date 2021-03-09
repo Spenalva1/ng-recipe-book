@@ -1,4 +1,4 @@
-# Project
+# NG Recipe Book
 
 Recipe book built to practice angular fundamentals connected to a firebase database. Firebase auth is used to authenticate the user.
 
