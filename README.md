@@ -1,6 +1,7 @@
 # NG Recipe Book
 
 Recipe book built to practice angular fundamentals connected to a firebase database. Firebase auth is used to authenticate the user.
+In ngrx branch the same project is build using NGRX to manage the state of the whole app
 
 ## Development server
 
